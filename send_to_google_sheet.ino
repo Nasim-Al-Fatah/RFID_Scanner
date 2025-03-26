@@ -13,7 +13,7 @@
 
 #define RST_PIN  D3         // Configurable, see typical pin layout above
 #define SS_PIN   D4        // Configurable, see typical pin layout above
-#define BUZZER_PIN D8     // Configurable, see typical pin layout above
+#define BUZZER_PIN D2     // Configurable, see typical pin layout above
 #define LED_PIN D1       // The ESP8266 pin D1 connected to resistor
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);
@@ -29,7 +29,7 @@ byte bufferLen = 18;
 byte readBlockData[18];
 
 String data2;
-const String data1 = "https://script.google.com/macros/s/AKfycbxGc4I9KY2MoVr_KxDggjkCPioM_mFRFCwCbPmHI1xTC-9EqK0UV8HCeZt1Sli7j3xjgw/exec?name=";
+const String data1 = "_WebAppLink_?name=";
 
 void setup() 
 {
@@ -43,7 +43,7 @@ void setup()
   pinMode(BUZZER_PIN, OUTPUT);
   pinMode(LED_PIN, OUTPUT);
 
-  WiFi.begin("Kunjo Kanon", "N@sri#71");
+  WiFi.begin("Wifi_name", "Password");
   while(WiFi.status() != WL_CONNECTED)
   {
     Serial.print("..");
@@ -151,6 +151,7 @@ void ReadDataFromBlock(int blockNum, byte readBlockData[])
 
   if (status != MFRC522::STATUS_OK)
   {
+     bufferLen = 18;
      Serial.print("Authentication failed for Read: ");
      Serial.println(mfrc522.GetStatusCodeName(status));
      return;
@@ -164,6 +165,7 @@ void ReadDataFromBlock(int blockNum, byte readBlockData[])
   status = mfrc522.MIFARE_Read(blockNum, readBlockData, &bufferLen);
   if (status != MFRC522::STATUS_OK)
   {
+    bufferLen = 18;
     Serial.print("Reading failed: ");
     Serial.println(mfrc522.GetStatusCodeName(status));
     return;
